@@ -1,4 +1,4 @@
-Shader "Custom/NewSurfaceShader"
+Shader "Custom/PhongShader"
 {
    Properties
    {
@@ -51,16 +51,11 @@ Shader "Custom/NewSurfaceShader"
             //取-是因为入射是 灯光->顶点，所以取反
             ref=normalize(ref);
             
-            // // 镜面反射公式  phong
-            //  fixed rdotv=saturate(dot(ref,view));
-            //  fixed4 spec=_LightColor0*_SpecularColor*pow(rdotv,_Shininess);
+            // //镜面反射公式
+            fixed rdotv=saturate(dot(ref,view));
+            fixed4 spec=_LightColor0*_SpecularColor*pow(rdotv,_Shininess);
 
-            //镜面反射公式  Blinn-phong
-            fixed3 h=normalize(light+view);//求半角向量
-            fixed ndoth=saturate(dot(n,h));
-            fixed4 spec=_LightColor0*_SpecularColor*pow(ndoth,_Shininess);
-
-            //公式
+            //Phong公式
             o.color=unity_AmbientSky+dif+spec;
             //o.color=unity_AmbientSky;
             //o.color=dif;
